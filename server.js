@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
     link3: "/viralloads",
     link4: "/htspositives",
     link5: "/htsnegatives",
+    link5: "/drugrefill",
   });
 });
 
@@ -35,6 +36,7 @@ require("./app/routes/fingerprint.routes.js")(app); // for http://localhost:5000
 require("./app/routes/globalproperty.routes.js")(app); // for http://localhost:5000/globalproperties route
 require("./app/routes/htspositive.routes.js")(app); // for http://localhost:5000/htspositives route
 require("./app/routes/htsnegative.routes.js")(app); // for http://localhost:5000/htsnegatives route
+require("./app/routes/drugrefill.routes.js")(app); // for http://localhost:5000/drugrefill route
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
