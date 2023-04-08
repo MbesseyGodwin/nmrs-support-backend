@@ -15,9 +15,9 @@ app.get("/", (req, res) => {
     link1: "/fingerprints",
     link2: "/globalproperties",
     link3: "/viralloads",
-    link4: "/htspositives",
-    link5: "/htsnegatives",
-    link5: "/drugrefill",
+    link4: "/htsresults",
+    link5: "/htsdata",
+    link6: "/drugrefill",
   });
 });
 
@@ -34,8 +34,8 @@ app.use(function (req, res, next) {
 require("./app/routes/customer.routes.js")(app); // for http://localhost:5000/customers route
 require("./app/routes/fingerprint.routes.js")(app); // for http://localhost:5000/fingerprints route
 require("./app/routes/globalproperty.routes.js")(app); // for http://localhost:5000/globalproperties route
-require("./app/routes/htspositive.routes.js")(app); // for http://localhost:5000/htspositives route
-require("./app/routes/htsnegative.routes.js")(app); // for http://localhost:5000/htsnegatives route
+require("./app/routes/htsresult.routes.js")(app); // for http://localhost:5000/htsresult route
+require("./app/routes/htsdata.routes.js")(app); // for http://localhost:5000/htsdata route
 require("./app/routes/drugrefill.routes.js")(app); // for http://localhost:5000/drugrefill route
 
 // set port, listen for requests
