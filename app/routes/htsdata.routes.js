@@ -1,4 +1,3 @@
-
 module.exports = htsdataRoute => {
     const htsdata = require("../controllers/htsdata.controller.js");
 

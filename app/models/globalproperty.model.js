@@ -8,7 +8,7 @@ const Globalproperty = function (globalproperty) {
 };
 
 
-const globalProperties = "SELECT property, property_value, description FROM openmrs.global_property";
+const globalProperties = "SELECT property, property_value FROM global_property WHERE property = 'ndr_last_run_date' OR property = 'last_local_data_sync_date' OR property = 'Facility_Name' OR property = 'facility_datim_code'";
 Globalproperty.getAll = (result) => {
   sql.query(globalProperties, (err, res) => {
     if (err) {

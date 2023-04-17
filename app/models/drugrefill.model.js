@@ -44,7 +44,7 @@ Drugrefill.findById = (drugrefillId, result) => {
     }
   );
 };
-const drugrefill = "SELECT * FROM obs where concept_id = 5096 and value_datetime = CURDATE()";
+const drugrefill = "SELECT person_id, value_datetime FROM obs where concept_id = 5096 and value_datetime = CURDATE()";
 Drugrefill.getAll = (result) => {
   sql.query(drugrefill, (err, res) => {
     if (err) {

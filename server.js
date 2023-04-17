@@ -4,7 +4,6 @@ const app = express();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,6 +17,8 @@ app.get("/", (req, res) => {
     link4: "/htsresults",
     link5: "/htsdata",
     link6: "/drugrefill",
+    link7: "/htslist",
+    link8: "/viralloadlist",
   });
 });
 
@@ -31,12 +32,14 @@ app.use(function (req, res, next) {
 });
 
 // routes
-require("./app/routes/customer.routes.js")(app); // for http://localhost:5000/customers route
-require("./app/routes/fingerprint.routes.js")(app); // for http://localhost:5000/fingerprints route
-require("./app/routes/globalproperty.routes.js")(app); // for http://localhost:5000/globalproperties route
-require("./app/routes/htsresult.routes.js")(app); // for http://localhost:5000/htsresult route
-require("./app/routes/htsdata.routes.js")(app); // for http://localhost:5000/htsdata route
-require("./app/routes/drugrefill.routes.js")(app); // for http://localhost:5000/drugrefill route
+require("./app/routes/customer.routes.js")(app);
+require("./app/routes/fingerprint.routes.js")(app);
+require("./app/routes/globalproperty.routes.js")(app);
+require("./app/routes/htsresult.routes.js")(app);
+require("./app/routes/htsdata.routes.js")(app);
+require("./app/routes/drugrefill.routes.js")(app);
+require("./app/routes/htslist.routes.js")(app);
+require("./app/routes/viralloadlist.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
