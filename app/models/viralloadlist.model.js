@@ -13,7 +13,7 @@ Viralloadlist.getAll = (result) => {
             return;
         }
 
-        console.log("viralloadlist: ", res);
+        // console.log("viralloadlist: ", res);
         result(null, res);
     });
 };

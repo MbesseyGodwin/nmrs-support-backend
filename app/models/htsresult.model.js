@@ -13,7 +13,7 @@ Htsresult.getAll = (result) => {
       return;
     }
 
-    console.log("htsresults: ", res);
+    // console.log("htsresults: ", res);
     result(null, res);
   });
 };

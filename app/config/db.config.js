@@ -1,7 +1,7 @@
 module.exports = {
   POST: 3306,
   HOST: "127.0.0.1",
-  USER: "root",
+  USER: "admin",
   PASSWORD: "Admin123",
-  DB: "openmrs"
+  DB: "fmc"
 };

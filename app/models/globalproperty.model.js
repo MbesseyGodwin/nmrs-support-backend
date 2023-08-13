@@ -8,7 +8,7 @@ const Globalproperty = function (globalproperty) {
 };
 
 
-const globalProperties = "SELECT property, property_value FROM global_property WHERE property = 'ndr_last_run_date' OR property = 'last_local_data_sync_date' OR property = 'Facility_Name' OR property = 'facility_datim_code'";
+const globalProperties = "SELECT property, property_value FROM global_property WHERE property = 'ndr_last_run_date' OR property = 'last_local_data_sync_date' OR property = 'Facility_Name' OR property = 'facility_datim_code' OR property = 'state'";
 Globalproperty.getAll = (result) => {
   sql.query(globalProperties, (err, res) => {
     if (err) {
@@ -17,7 +17,7 @@ Globalproperty.getAll = (result) => {
       return;
     }
 
-    console.log("globalproperties: ", res);
+    // console.log("globalproperties: ", res);
     result(null, res);
   });
 };

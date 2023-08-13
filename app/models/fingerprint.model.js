@@ -15,10 +15,11 @@ Fingerprint.create = (newFingerprint, result) => {
       return;
     }
 
-    console.log("created fingerprint: ", {
-      id: res.insertId,
-      ...newFingerprint,
-    });
+    // console.log("created fingerprint: ", {
+    //   id: res.insertId,
+    //   ...newFingerprint,
+    // });
+
     result(null, { id: res.insertId, ...newFingerprint });
   });
 };

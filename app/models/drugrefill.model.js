@@ -7,44 +7,12 @@ const Drugrefill = function (drugrefill) {
   this.patient_id = drugrefill.patient_id;
 };
 
-Drugrefill.create = (newDrugrefill, result) => {
-  sql.query("INSERT INTO drugrefills SET ?", newDrugrefill, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
 
-    console.log("created drugrefill: ", {
-      id: res.insertId,
-      ...newDrugrefill,
-    });
-    result(null, { id: res.insertId, ...newDrugrefill });
-  });
-};
 
-Drugrefill.findById = (drugrefillId, result) => {
-  sql.query(
-    `SELECT * FROM drugrefills WHERE id = ${drugrefillId}`,
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-
-      if (res.length) {
-        console.log("found drugrefill: ", res[0]);
-        result(null, res[0]);
-        return;
-      }
-
-      // not found drugrefill with the id
-      result({ kind: "not_found" }, null);
-    }
-  );
-};
-const drugrefill = "SELECT person_id, value_datetime FROM obs where concept_id = 5096 and value_datetime = CURDATE()";
+const startdate = '2023-04-19';
+const enddate = '2023-04-24';
+// console.log(enddate);
+const drugrefill = "SELECT DISTINCT obs.person_id ,concat(pn.given_name,' ',pn.family_name) AS 'PatientName' ,identifier AS 'PEPFARId' ,DATE_FORMAT(obs.value_datetime, '%Y-%m-%d') AS 'AppointmentDate' ,pa.value AS 'phoneNumber' FROM obs INNER JOIN person_name pn ON pn.person_id = obs.person_id AND pn.voided = 0 INNER JOIN patient_identifier pi ON pi.patient_id = obs.person_id AND identifier_type = 4 LEFT JOIN person_attribute pa ON obs.person_id = pa.person_id AND pa.voided = 0 WHERE concept_id = 5096 AND obs.encounter_id IN ( SELECT distinct encounter_id FROM openmrs.encounter WHERE form_id = 14) AND value_datetime BETWEEN '" + startdate + "' AND '" + enddate + "'";
 Drugrefill.getAll = (result) => {
   sql.query(drugrefill, (err, res) => {
     if (err) {
@@ -53,72 +21,7 @@ Drugrefill.getAll = (result) => {
       return;
     }
 
-    console.log("drugrefills: ", res);
-    result(null, res);
-  });
-};
-
-Drugrefill.updateById = (id, drugrefill, result) => {
-  sql.query(
-    "UPDATE drugrefills SET template = ?, date_created = ?, patient_id = ? WHERE id = ?",
-    [
-      drugrefill.template,
-      drugrefill.date_created,
-      drugrefill.patient_id,
-      id,
-    ],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-
-      if (res.affectedRows == 0) {
-        // not found drugrefill with the id
-        result({ kind: "not_found" }, null);
-        return;
-      }
-
-      console.log("updated drugrefill: ", { id: id, ...drugrefill });
-      result(null, { id: id, ...drugrefill });
-    }
-  );
-};
-
-Drugrefill.remove = (id, result) => {
-  sql.query("DELETE FROM drugrefills WHERE id = ?", id, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    if (res.affectedRows == 0) {
-      // not found drugrefill with the id
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-      return;
-    }
-
-    console.log("deleted drugrefill with id: ", id);
-    result(null, res);
-  });
-};
-
-Drugrefill.removeAll = (result) => {
-  sql.query("DELETE FROM drugrefill", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log(`deleted ${res.affectedRows} drugrefill`);
+    // console.log("drugrefills: ", res);
     result(null, res);
   });
 };

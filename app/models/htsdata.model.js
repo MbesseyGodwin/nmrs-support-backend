@@ -13,7 +13,7 @@ Htsdata.getAll = (result) => {
             return;
         }
 
-        console.log("htsdata: ", res);
+        // console.log("htsdata: ", res);
         result(null, res);
     });
 };

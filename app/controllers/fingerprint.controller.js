@@ -66,7 +66,7 @@ exports.update = (req, res) => {
     });
   }
 
-  console.log(req.body);
+  // console.log(req.body);
 
   Fingerprint.updateById(
     req.params.fingerprintId,

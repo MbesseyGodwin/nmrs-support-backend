@@ -65,7 +65,7 @@ exports.update = (req, res) => {
     });
   }
 
-  console.log(req.body);
+  // console.log(req.body);
 
   Customer.updateById(
     req.params.customerId,
