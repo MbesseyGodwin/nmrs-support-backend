@@ -2,32 +2,32 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
-
 const app = express();
 const port = process.env.PORT || 5000;
 
-const mongoURI = 'mongodb+srv://nigerianprogramer:Abuja2Mars@cluster0.5txx9he.mongodb.net/test?retryWrites=true&w=majority';
-const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+// Import the MongoDB URI from a separate file
+const mongoURI = require('./app/config/config.js').mongoURI;
 
+// Middleware
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors());
 
 // Set up the MongoDB connection and collection
 let reportsCollection;
+let client; // Define client globally
 
 async function connectToDatabase() {
     try {
+        client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
         await client.connect();
         const db = client.db('nmrs-support');
         reportsCollection = db.collection('reports');
-        console.log('Connected to database');
+        console.log('Connected to the database');
     } catch (error) {
-        console.error('Error connecting to database:', error);
+        console.error('Error connecting to the database:', error);
     }
 }
-
-connectToDatabase();
 
 // Define CORS headers
 app.use((req, res, next) => {
@@ -39,33 +39,41 @@ app.use((req, res, next) => {
   next();
 });
 
-// Define API routes
+// API Routes
 app.get("/", (req, res) => {
   res.json({
     message: `API Routes`,
-    link1: "/fingerprints",
-    link2: "/globalproperties",
-    link3: "/viralloads",
-    link4: "/htsresults",
-    link5: "/htsdata",
-    link6: "/drugrefill",
-    link7: "/htslist",
-    link8: "/viralloadlist",
-    link9: "/api/reports",
+    links: [
+      "/fingerprints",
+      "/globalproperties",
+      "/viralloads",
+      "/htsresults",
+      "/htsdata",
+      "/drugrefill",
+      "/htslist",
+      "/viralloadlist",
+      "/api/reports"
+    ]
   });
 });
 
-// routes
-require("./app/routes/customer.routes.js")(app);
-require("./app/routes/fingerprint.routes.js")(app);
-require("./app/routes/globalproperty.routes.js")(app);
-require("./app/routes/htsresult.routes.js")(app);
-require("./app/routes/htsdata.routes.js")(app);
-require("./app/routes/drugrefill.routes.js")(app);
-require("./app/routes/htslist.routes.js")(app);
-require("./app/routes/viralloadlist.routes.js")(app);
+// Import and use API routes
+const apiRoutes = [
+  "customer",
+  "fingerprint",
+  "globalproperty",
+  "htsresult",
+  "htsdata",
+  "drugrefill",
+  "htslist",
+  "viralloadlist"
+];
 
+apiRoutes.forEach(route => {
+  require(`./app/routes/${route}.routes.js`)(app);
+});
 
+// POST route for reports
 app.post('/api/reports', async (req, res) => {
     try {
         if (!reportsCollection) {
@@ -74,14 +82,13 @@ app.post('/api/reports', async (req, res) => {
 
         const newData = req.body;
 
-        // Update the document with a matching name (or ID)
-        const filter = { name: newData.name }; // You can use any unique identifier here
+        const filter = { name: newData.name };
         const update = { $set: newData };
 
         const result = await reportsCollection.updateOne(filter, update, { upsert: true });
 
         if (result.matchedCount > 0 || result.upsertedCount > 0) {
-            console.log("Data updated successfully in the online Database");
+            console.log("Data updated successfully in the online database");
             res.status(201).json({ message: 'Data updated successfully' });
         } else {
             console.log("No matching document found. Inserting as new data.");
@@ -94,7 +101,7 @@ app.post('/api/reports', async (req, res) => {
     }
 });
 
-
+// GET route for reports
 app.get('/api/reports', async (req, res) => {
     try {
         if (!reportsCollection) {
@@ -110,7 +117,12 @@ app.get('/api/reports', async (req, res) => {
     }
 });
 
-// Listen on the specified port
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// Start the server
+async function startServer() {
+    await connectToDatabase();
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
+
+startServer();
