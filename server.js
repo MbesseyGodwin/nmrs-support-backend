@@ -45,6 +45,7 @@ app.get("/", (req, res) => {
     message: `API Routes`,
     links: [
       "/fingerprints",
+      "/recapture",
       "/globalproperties",
       "/viralloads",
       "/htsresults",
@@ -52,6 +53,7 @@ app.get("/", (req, res) => {
       "/drugrefill",
       "/htslist",
       "/viralloadlist",
+      "/ltfu",
       "/api/reports"
     ]
   });
@@ -59,14 +61,15 @@ app.get("/", (req, res) => {
 
 // Import and use API routes
 const apiRoutes = [
-  "customer",
   "fingerprint",
+  "recapture",
   "globalproperty",
   "htsresult",
   "htsdata",
   "drugrefill",
   "htslist",
-  "viralloadlist"
+  "viralloadlist",
+  "ltfu"
 ];
 
 apiRoutes.forEach(route => {
@@ -81,6 +84,9 @@ app.post('/api/reports', async (req, res) => {
         }
 
         const newData = req.body;
+
+        // Add a timestamp field with the current date and time
+        newData.timestamp = new Date();
 
         const filter = { name: newData.name };
         const update = { $set: newData };
@@ -100,6 +106,7 @@ app.post('/api/reports', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 // GET route for reports
 app.get('/api/reports', async (req, res) => {

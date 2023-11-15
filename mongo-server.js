@@ -5,7 +5,7 @@ const cors = require('cors'); // Import the cors package
 const app = express();
 const port = process.env.PORT || 5000;
 
-const mongoURI = 'mongodb+srv://nigerianprogramer:Abuja2Mars@cluster0.5txx9he.mongodb.net/test?retryWrites=true&w=majority';
+const mongoURI = 'null';
 const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(express.json());
