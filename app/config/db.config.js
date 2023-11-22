@@ -3,5 +3,5 @@ module.exports = {
   HOST: "127.0.0.1",
   USER: "admin",
   PASSWORD: "Admin123",
-  DB: "openmrs"
+  DB: "mendel"
 };
